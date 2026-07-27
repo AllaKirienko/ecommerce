@@ -48,6 +48,7 @@ def test_product_count():
 
     assert Category.product_count == initial_product_count + 2
 
+
 def test_category_count():
     initial_category_count = Category.category_count
 
