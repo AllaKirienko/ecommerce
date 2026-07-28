@@ -58,3 +58,56 @@ def test_category_count():
     Category("Бытовая техника", "Техника для дома", [product])
 
     assert Category.category_count == initial_category_count + 2
+
+
+def test_product_str():
+    product = Product(
+        "Телефон",
+        "Смартфон",
+        50000.0,
+        10,
+    )
+
+    assert str(product) == "Телефон, 50000.0 руб. Остаток: 10 шт."
+
+
+def test_category_str():
+    product_1 = Product(
+        "Телефон",
+        "Смартфон",
+        50000.0,
+        10,
+    )
+
+    product_2 = Product(
+        "Ноутбук",
+        "Компьютер",
+        100000.0,
+        5,
+    )
+
+    category = Category(
+        "Электроника",
+        "Техника",
+        [product_1, product_2],
+    )
+
+    assert str(category) == "Электроника, количество продуктов: 15 шт."
+
+
+def test_product_add():
+    product_1 = Product(
+        "Телефон",
+        "Смартфон",
+        50000.0,
+        10,
+    )
+
+    product_2 = Product(
+        "Ноутбук",
+        "Компьютер",
+        100000.0,
+        5,
+    )
+
+    assert product_1 + product_2 == 1000000.0

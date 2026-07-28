@@ -18,7 +18,10 @@ def main():
 
     category = Category(
         "Смартфоны",
-        "Смартфоны, как средство не только коммуникации, но и получения дополнительных функций для удобства жизни",
+        (
+            "Смартфоны, как средство не только коммуникации, "
+            "но и получения дополнительных функций для удобства жизни"
+        ),
         [product1, product2],
     )
 
@@ -27,6 +30,10 @@ def main():
     print(len(category.products))
     print(Category.category_count)
     print(Category.product_count)
+    print(product1)
+    print(product2)
+    print(category)
+    print(product1 + product2)
 
 
 if __name__ == "__main__":
