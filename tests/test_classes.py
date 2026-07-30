@@ -29,9 +29,14 @@ def test_category_initialization():
         products=[product],
     )
 
+    expected_product = (
+        "Телефон, 50000.0 руб. "
+        "Остаток: 10 шт."
+    )
+
     assert category.name == "Электроника"
     assert category.description == "Техника"
-    assert category.products == [product]
+    assert category.products == expected_product
 
 
 def test_product_count():
@@ -111,3 +116,74 @@ def test_product_add():
     )
 
     assert product_1 + product_2 == 1000000.0
+
+
+def test_add_product():
+    product_1 = Product(
+        "Телефон",
+        "Смартфон",
+        50000.0,
+        10,
+    )
+
+    product_2 = Product(
+        "Ноутбук",
+        "Компьютер",
+        100000.0,
+        5,
+    )
+
+    category = Category(
+        "Электроника",
+        "Техника",
+        [product_1],
+    )
+
+    initial_count = Category.product_count
+
+    category.add_product(product_2)
+
+    assert "Ноутбук, 100000.0 руб. Остаток: 5 шт." in category.products
+    assert Category.product_count == initial_count + 1
+
+
+def test_product_price_setter():
+    product = Product(
+        "Телефон",
+        "Смартфон",
+        50000.0,
+        10,
+    )
+
+    product.price = 60000.0
+
+    assert product.price == 60000.0
+
+
+def test_product_negative_price():
+    product = Product(
+        "Телефон",
+        "Смартфон",
+        50000.0,
+        10,
+    )
+
+    product.price = -100
+
+    assert product.price == 50000.0
+
+
+def test_new_product():
+    product_data = {
+        "name": "Телефон",
+        "description": "Смартфон",
+        "price": 50000.0,
+        "quantity": 10,
+    }
+
+    product = Product.new_product(product_data)
+
+    assert product.name == "Телефон"
+    assert product.description == "Смартфон"
+    assert product.price == 50000.0
+    assert product.quantity == 10
