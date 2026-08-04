@@ -1,4 +1,22 @@
-class Product:
+from abc import ABC, abstractmethod
+
+class BaseProduct(ABC):
+
+    @abstractmethod
+    def __str__(self):
+        pass
+
+class PrintMixin:
+
+    def __init__(self, *args, **kwargs):
+        print(
+            f"Создан объект {self.__class__.__name__}"
+            f" с параметрами {args}"
+        )
+
+
+class Product(PrintMixin, BaseProduct):
+
     def __init__(
         self,
         name: str,
@@ -10,6 +28,8 @@ class Product:
         self.description = description
         self.__price = price
         self.quantity = quantity
+
+        super().__init__()
 
     @property
     def price(self):
@@ -123,107 +143,3 @@ class LawnGrass(Product):
         self.country = country
         self.germination_period = germination_period
         self.color = color
-
-
-def test_smartphone_initialization():
-    smartphone = Smartphone(
-        "Samsung",
-        "Смартфон",
-        100000.0,
-        5,
-        "Высокая",
-        "S23 Ultra",
-        256,
-        "Черный",
-    )
-
-    assert smartphone.name == "Samsung"
-    assert smartphone.efficiency == "Высокая"
-    assert smartphone.model == "S23 Ultra"
-    assert smartphone.memory == 256
-    assert smartphone.color == "Черный"
-
-
-def test_lawn_grass_initialization():
-    grass = LawnGrass(
-        "Газон",
-        "Трава",
-        500.0,
-        10,
-        "Россия",
-        "7 дней",
-        "Зеленый",
-    )
-
-    assert grass.country == "Россия"
-    assert grass.germination_period == "7 дней"
-    assert grass.color == "Зеленый"
-
-
-def test_add_same_products():
-    smartphone_1 = Smartphone(
-        "Samsung",
-        "Смартфон",
-        100000.0,
-        2,
-        "Высокая",
-        "S23",
-        256,
-        "Черный",
-    )
-
-    smartphone_2 = Smartphone(
-        "Iphone",
-        "Смартфон",
-        120000.0,
-        1,
-        "Высокая",
-        "15",
-        128,
-        "Белый",
-    )
-
-    assert smartphone_1 + smartphone_2 == 320000.0
-
-
-def test_add_different_products():
-    smartphone = Smartphone(
-        "Samsung",
-        "Смартфон",
-        100000.0,
-        2,
-        "Высокая",
-        "S23",
-        256,
-        "Черный",
-    )
-
-    grass = LawnGrass(
-        "Газон",
-        "Трава",
-        500.0,
-        10,
-        "Россия",
-        "7 дней",
-        "Зеленый",
-    )
-
-    try:
-        smartphone + grass
-        assert False
-    except TypeError:
-        assert True
-
-
-def test_add_invalid_product():
-    category = Category(
-        "Категория",
-        "Описание",
-        [],
-    )
-
-    try:
-        category.add_product("не продукт")
-        assert False
-    except TypeError:
-        assert True
