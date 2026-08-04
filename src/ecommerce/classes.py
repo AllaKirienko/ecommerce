@@ -29,10 +29,12 @@ class Product:
         )
 
     def __add__(self, other):
-        return (
-            self.price * self.quantity
-            + other.price * other.quantity
-        )
+        if type(self) is not type(other):
+            raise TypeError(
+                "Можно складывать только одинаковые типы продуктов"
+            )
+
+        return self.price * self.quantity + other.price * other.quantity
 
     @classmethod
     def new_product(cls, product_dict):
@@ -61,7 +63,10 @@ class Category:
         Category.category_count += 1
         Category.product_count += len(products)
 
-    def add_product(self, product: Product):
+    def add_product(self, product):
+        if not isinstance(product, Product):
+            raise TypeError("Можно добавлять только продукты")
+
         self._products.append(product)
         Category.product_count += 1
 
@@ -70,10 +75,155 @@ class Category:
         return "\n".join(str(product) for product in self._products)
 
     def __str__(self):
-        total_quantity = sum(
-            product.quantity for product in self._products
+        total_quantity = sum(product.quantity for product in self._products)
+        return f"{self.name}, количество продуктов: " f"{total_quantity} шт."
+
+
+class Smartphone(Product):
+    def __init__(
+        self,
+        name: str,
+        description: str,
+        price: float,
+        quantity: int,
+        efficiency: str,
+        model: str,
+        memory: int,
+        color: str,
+    ):
+        super().__init__(
+            name,
+            description,
+            price,
+            quantity,
         )
-        return (
-            f"{self.name}, количество продуктов: "
-            f"{total_quantity} шт."
+        self.efficiency = efficiency
+        self.model = model
+        self.memory = memory
+        self.color = color
+
+
+class LawnGrass(Product):
+    def __init__(
+        self,
+        name: str,
+        description: str,
+        price: float,
+        quantity: int,
+        country: str,
+        germination_period: str,
+        color: str,
+    ):
+        super().__init__(
+            name,
+            description,
+            price,
+            quantity,
         )
+        self.country = country
+        self.germination_period = germination_period
+        self.color = color
+
+
+def test_smartphone_initialization():
+    smartphone = Smartphone(
+        "Samsung",
+        "Смартфон",
+        100000.0,
+        5,
+        "Высокая",
+        "S23 Ultra",
+        256,
+        "Черный",
+    )
+
+    assert smartphone.name == "Samsung"
+    assert smartphone.efficiency == "Высокая"
+    assert smartphone.model == "S23 Ultra"
+    assert smartphone.memory == 256
+    assert smartphone.color == "Черный"
+
+
+def test_lawn_grass_initialization():
+    grass = LawnGrass(
+        "Газон",
+        "Трава",
+        500.0,
+        10,
+        "Россия",
+        "7 дней",
+        "Зеленый",
+    )
+
+    assert grass.country == "Россия"
+    assert grass.germination_period == "7 дней"
+    assert grass.color == "Зеленый"
+
+
+def test_add_same_products():
+    smartphone_1 = Smartphone(
+        "Samsung",
+        "Смартфон",
+        100000.0,
+        2,
+        "Высокая",
+        "S23",
+        256,
+        "Черный",
+    )
+
+    smartphone_2 = Smartphone(
+        "Iphone",
+        "Смартфон",
+        120000.0,
+        1,
+        "Высокая",
+        "15",
+        128,
+        "Белый",
+    )
+
+    assert smartphone_1 + smartphone_2 == 320000.0
+
+
+def test_add_different_products():
+    smartphone = Smartphone(
+        "Samsung",
+        "Смартфон",
+        100000.0,
+        2,
+        "Высокая",
+        "S23",
+        256,
+        "Черный",
+    )
+
+    grass = LawnGrass(
+        "Газон",
+        "Трава",
+        500.0,
+        10,
+        "Россия",
+        "7 дней",
+        "Зеленый",
+    )
+
+    try:
+        smartphone + grass
+        assert False
+    except TypeError:
+        assert True
+
+
+def test_add_invalid_product():
+    category = Category(
+        "Категория",
+        "Описание",
+        [],
+    )
+
+    try:
+        category.add_product("не продукт")
+        assert False
+    except TypeError:
+        assert True
