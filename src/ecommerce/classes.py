@@ -1,10 +1,12 @@
 from abc import ABC, abstractmethod
 
+
 class BaseProduct(ABC):
 
     @abstractmethod
     def __str__(self):
         pass
+
 
 class PrintMixin:
 
@@ -100,6 +102,7 @@ class Category:
 
 
 class Smartphone(Product):
+
     def __init__(
         self,
         name: str,
@@ -124,6 +127,7 @@ class Smartphone(Product):
 
 
 class LawnGrass(Product):
+
     def __init__(
         self,
         name: str,
