@@ -24,3 +24,8 @@ dev = [
     "flake8 (>=7.3.0,<8.0.0)",
     "black (>=26.5.1,<27.0.0)"
 ]
+
+[tool.coverage.run]
+omit = [
+    "src/ecommerce/main.py",
+]

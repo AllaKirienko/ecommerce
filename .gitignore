@@ -1,4 +1,6 @@
 .idea/
 .coverage
+htmlcov/
+.pytest_cache/
 __pycache__/
 *.pyc

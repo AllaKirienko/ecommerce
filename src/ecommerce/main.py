@@ -1,4 +1,4 @@
-from ecommerce.classes import Category, Product
+from ecommerce.classes import Category, LawnGrass, Product, Smartphone
 
 
 def main():
@@ -16,23 +16,55 @@ def main():
         8,
     )
 
-    category = Category(
+    product3 = Smartphone(
+        "Samsung Galaxy S24",
+        "512GB, Black",
+        190000.0,
+        4,
+        "Высокая",
+        "S24",
+        512,
+        "Черный",
+    )
+
+    product4 = LawnGrass(
+        "Газонная трава",
+        "Для дачи",
+        500.0,
+        20,
+        "Россия",
+        "7 дней",
+        "Зеленый",
+    )
+
+    category1 = Category(
         "Смартфоны",
         (
             "Смартфоны, как средство не только коммуникации, "
             "но и получения дополнительных функций для удобства жизни"
         ),
-        [product1, product2],
+        [product1, product2, product3],
     )
 
-    print(category.name)
-    print(category.description)
-    print(len(category.products))
+    category2 = Category(
+        "Газонная трава",
+        "Товары для сада",
+        [product4],
+    )
+
+    print(category1.name)
+    print(category1.description)
+    print(category1.products)
+    print(category1)
+
+    print(category2.name)
+    print(category2.description)
+    print(category2.products)
+    print(category2)
+
     print(Category.category_count)
     print(Category.product_count)
-    print(product1)
-    print(product2)
-    print(category)
+
     print(product1 + product2)
 
 

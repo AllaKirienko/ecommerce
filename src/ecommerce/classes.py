@@ -1,4 +1,24 @@
-class Product:
+from abc import ABC, abstractmethod
+
+
+class BaseProduct(ABC):
+
+    @abstractmethod
+    def __str__(self):
+        pass
+
+
+class PrintMixin:
+
+    def __init__(self, *args, **kwargs):
+        print(
+            f"Создан объект {self.__class__.__name__}"
+            f" с параметрами {args}"
+        )
+
+
+class Product(PrintMixin, BaseProduct):
+
     def __init__(
         self,
         name: str,
@@ -10,6 +30,8 @@ class Product:
         self.description = description
         self.__price = price
         self.quantity = quantity
+
+        super().__init__()
 
     @property
     def price(self):
@@ -80,6 +102,7 @@ class Category:
 
 
 class Smartphone(Product):
+
     def __init__(
         self,
         name: str,
@@ -104,6 +127,7 @@ class Smartphone(Product):
 
 
 class LawnGrass(Product):
+
     def __init__(
         self,
         name: str,
@@ -123,4 +147,3 @@ class LawnGrass(Product):
         self.country = country
         self.germination_period = germination_period
         self.color = color
-

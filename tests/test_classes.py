@@ -293,3 +293,16 @@ def test_add_invalid_product():
         assert False
     except TypeError:
         assert True
+
+
+def test_product_mixin_print(capsys):
+    Product(
+        "Телефон",
+        "Смартфон",
+        50000,
+        10,
+    )
+
+    captured = capsys.readouterr()
+
+    assert "Создан объект Product" in captured.out
