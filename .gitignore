@@ -1,6 +1,5 @@
 .idea/
 .coverage
-coverage.xml
 htmlcov/
 .pytest_cache/
 __pycache__/
