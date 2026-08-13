@@ -1,4 +1,24 @@
-class Product:
+from abc import ABC, abstractmethod
+
+
+class BaseProduct(ABC):
+
+    @abstractmethod
+    def __str__(self):
+        pass
+
+
+class PrintMixin:
+
+    def __init__(self, *args, **kwargs):
+        print(
+            f"Создан объект {self.__class__.__name__}"
+            f" с параметрами {args}"
+        )
+
+
+class Product(PrintMixin, BaseProduct):
+
     def __init__(
         self,
         name: str,
@@ -8,8 +28,16 @@ class Product:
     ):
         self.name = name
         self.description = description
+
+        if quantity == 0:
+            raise ValueError(
+                "Товар с нулевым количеством не может быть добавлен"
+            )
+
         self.__price = price
         self.quantity = quantity
+
+        super().__init__()
 
     @property
     def price(self):
@@ -74,12 +102,21 @@ class Category:
     def products(self):
         return "\n".join(str(product) for product in self._products)
 
+    def average_price(self):
+        try:
+            return sum(product.price for product in self._products) / len(
+                self._products
+            )
+        except ZeroDivisionError:
+            return 0
+
     def __str__(self):
         total_quantity = sum(product.quantity for product in self._products)
         return f"{self.name}, количество продуктов: " f"{total_quantity} шт."
 
 
 class Smartphone(Product):
+
     def __init__(
         self,
         name: str,
@@ -104,6 +141,7 @@ class Smartphone(Product):
 
 
 class LawnGrass(Product):
+
     def __init__(
         self,
         name: str,
@@ -123,4 +161,3 @@ class LawnGrass(Product):
         self.country = country
         self.germination_period = germination_period
         self.color = color
-
