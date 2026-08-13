@@ -28,6 +28,12 @@ class Product(PrintMixin, BaseProduct):
     ):
         self.name = name
         self.description = description
+
+        if quantity == 0:
+            raise ValueError(
+                "Товар с нулевым количеством не может быть добавлен"
+            )
+
         self.__price = price
         self.quantity = quantity
 
@@ -95,6 +101,14 @@ class Category:
     @property
     def products(self):
         return "\n".join(str(product) for product in self._products)
+
+    def average_price(self):
+        try:
+            return sum(product.price for product in self._products) / len(
+                self._products
+            )
+        except ZeroDivisionError:
+            return 0
 
     def __str__(self):
         total_quantity = sum(product.quantity for product in self._products)

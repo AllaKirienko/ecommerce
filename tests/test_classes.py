@@ -306,3 +306,52 @@ def test_product_mixin_print(capsys):
     captured = capsys.readouterr()
 
     assert "Создан объект Product" in captured.out
+
+
+def test_product_zero_quantity():
+    try:
+        Product(
+            "Телефон",
+            "Смартфон",
+            50000.0,
+            0,
+        )
+        assert False
+    except ValueError as error:
+        assert str(error) == (
+            "Товар с нулевым количеством не может быть добавлен"
+        )
+
+
+def test_average_price():
+    product_1 = Product(
+        "Телефон",
+        "Смартфон",
+        50000.0,
+        10,
+    )
+
+    product_2 = Product(
+        "Ноутбук",
+        "Компьютер",
+        100000.0,
+        5,
+    )
+
+    category = Category(
+        "Электроника",
+        "Техника",
+        [product_1, product_2],
+    )
+
+    assert category.average_price() == 75000.0
+
+
+def test_average_price_empty_category():
+    category = Category(
+        "Пустая категория",
+        "Без товаров",
+        [],
+    )
+
+    assert category.average_price() == 0
